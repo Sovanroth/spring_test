@@ -14,8 +14,6 @@ public class Student {
     private String name;
     private int age;
 
-    private Date createdAt;
-
     public String getName() {
         return name;
     }
@@ -30,5 +28,13 @@ public class Student {
 
     public int getId() {
         return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
