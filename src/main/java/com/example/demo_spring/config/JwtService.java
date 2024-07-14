@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +19,8 @@ public class JwtService {
 
     private static final String SECRET_KEY = "Wm1nPZ5vC4N6Qx6eAml0TzB5Xx2rOZ7H2eXl1Z1JgM4=";
 
-    public String extractUsername(String jwt) {
-        return null;
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -29,17 +28,12 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    public String generateToken(
-            Map<String, Object> claims,
-            UserDetails userDetails
-    ) {
-        return Jwts
-                .builder()
+    public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
+        return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -47,7 +41,6 @@ public class JwtService {
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
