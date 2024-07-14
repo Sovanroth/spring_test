@@ -54,20 +54,47 @@ public class AuthenticationService {
     }
 
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-        var user = repository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .error(false)
-                .message("Login successful")
-                .user(AuthenticationResponse.UserResponse.builder()
-                        .email(user.getEmail())
-                        .password(user.getPassword())
-                        .token(jwtToken)
-                        .build())
-                .build();
+    public AuthenticationResponse login(AuthenticationRequest request) {
+        try {
+            // Find the user by email
+            var userOptional = repository.findByEmail(request.getEmail());
+            if (userOptional.isEmpty()) {
+                return AuthenticationResponse.builder()
+                        .error(true)
+                        .message("Invalid credentials")
+                        .build();
+            }
+
+            var user = userOptional.get();
+
+            // Validate the password
+            if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                return AuthenticationResponse.builder()
+                        .error(true)
+                        .message("Invalid credentials")
+                        .build();
+            }
+
+            // Generate JWT token
+            var jwtToken = jwtService.generateToken(user);
+
+            // Return success response
+            return AuthenticationResponse.builder()
+                    .error(false)
+                    .message("Login successful")
+                    .user(AuthenticationResponse.UserResponse.builder()
+                            .email(user.getEmail())
+                            .password(user.getPassword())
+                            .token(jwtToken)
+                            .build())
+                    .build();
+        } catch (Exception e) {
+            // Handle unexpected errors
+            return AuthenticationResponse.builder()
+                    .error(true)
+                    .message("An unexpected error occurred: " + e.getMessage())
+                    .build();
+        }
     }
+
 }

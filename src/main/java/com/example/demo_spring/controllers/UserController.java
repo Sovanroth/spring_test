@@ -31,7 +31,7 @@ public class UserController {
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody AuthenticationRequest request
     ) {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+        return ResponseEntity.ok(authenticationService.login(request));
     }
 
 }
