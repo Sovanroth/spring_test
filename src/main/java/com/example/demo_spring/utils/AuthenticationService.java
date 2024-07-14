@@ -16,7 +16,7 @@ public class AuthenticationService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService; // Change from field injection to constructor injection
+    private final JwtService jwtService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
@@ -26,8 +26,13 @@ public class AuthenticationService {
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .error(false)
                 .message("User registered successfully")
+                .user(AuthenticationResponse.UserResponse.builder()
+                        .email(user.getEmail())
+                        .password(user.getPassword())
+                        .token(jwtToken)
+                        .build())
                 .build();
     }
 
@@ -35,11 +40,16 @@ public class AuthenticationService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        var user = repository.findByEmail(request.getEmail()).orElse(null);
+        var user = repository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .message("User authenticated successfully")
+                .error(false)
+                .message("Login successful")
+                .user(AuthenticationResponse.UserResponse.builder()
+                        .email(user.getEmail())
+                        .password(user.getPassword())
+                        .token(jwtToken)
+                        .build())
                 .build();
     }
 }

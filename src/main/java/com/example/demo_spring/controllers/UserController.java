@@ -1,6 +1,7 @@
 package com.example.demo_spring.controllers;
 
 import com.example.demo_spring.services.UserRepository;
+import com.example.demo_spring.utils.AuthenticationRequest;
 import com.example.demo_spring.utils.AuthenticationResponse;
 import com.example.demo_spring.utils.AuthenticationService;
 import com.example.demo_spring.utils.RegisterRequest;
@@ -24,6 +25,13 @@ public class UserController {
             @RequestBody RegisterRequest request
     ) {
         return ResponseEntity.ok(authenticationService.register(request));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(
+            @RequestBody AuthenticationRequest request
+    ) {
+        return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
 }
