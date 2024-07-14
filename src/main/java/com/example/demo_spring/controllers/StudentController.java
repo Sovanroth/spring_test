@@ -1,8 +1,8 @@
 package com.example.demo_spring.controllers;
 
-import com.example.demo_spring.models.CustomResponse;
+import com.example.demo_spring.utils.CustomResponse;
 import com.example.demo_spring.models.Student;
-import com.example.demo_spring.services.StudentRepository;
+import com.example.demo_spring.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

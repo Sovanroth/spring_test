@@ -1,4 +1,6 @@
-package com.example.demo_spring.models;
+package com.example.demo_spring.utils;
+
+import com.example.demo_spring.models.Student;
 
 import java.util.List;
 
