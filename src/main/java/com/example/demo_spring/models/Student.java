@@ -14,6 +14,17 @@ public class Student {
     private String name;
     private int age;
 
+    @OneToOne(mappedBy = "student",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Profile profile;
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
     public String getName() {
         return name;
     }

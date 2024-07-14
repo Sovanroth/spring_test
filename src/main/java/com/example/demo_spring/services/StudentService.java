@@ -86,11 +86,15 @@ public class StudentService {
     public ResponseEntity<CustomResponse> searchStudentsByName(String name) {
         try {
             List<Student> students = studentRepository.findByNameContainingIgnoreCase(name);
-            return ResponseEntity.ok(new CustomResponse(false, "Search completed successfully", students));
+            return ResponseEntity.ok(new CustomResponse(false, "Get Successfully", students));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new CustomResponse(true, "Error searching students", null));
         }
+    }
+
+    public Optional<Student> getStudentById(int id) {
+        return studentRepository.findById(id);
     }
 
 }
