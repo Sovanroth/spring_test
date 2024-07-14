@@ -37,4 +37,9 @@ public class StudentController {
     public ResponseEntity<CustomResponse> updateStudent(@PathVariable int id, @RequestBody Student student) {
         return studentService.updateStudent(id, student);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<CustomResponse> searchStudentsByName(@RequestParam String name) {
+        return studentService.searchStudentsByName(name);
+    }
 }
