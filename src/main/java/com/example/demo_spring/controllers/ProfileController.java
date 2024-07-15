@@ -4,7 +4,10 @@ import com.example.demo_spring.models.Profile;
 import com.example.demo_spring.models.Student;
 import com.example.demo_spring.services.ProfileService;
 import com.example.demo_spring.services.StudentService;
+import com.example.demo_spring.utils.CustomResponse;
+import com.example.demo_spring.utils.ProfileResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +22,6 @@ public class ProfileController {
     private final ProfileService profileService;
     private final StudentService studentService;
 
-    @GetMapping
-    public List<Profile> getAllProfiles() {
-        return profileService.findAllProfile();
-    }
 
     @PostMapping("/{studentId}")
     public ResponseEntity<Profile> createProfile(@PathVariable int studentId, @RequestBody Profile profile) {
@@ -37,6 +36,17 @@ public class ProfileController {
         } else {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProfileResponse> updateProfile(@PathVariable int id, @RequestBody Profile profile) {
+        ProfileResponse response = profileService.updateProfile(id, profile);
+        return new ResponseEntity<>(response, response.isError() ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ProfileResponse> deleteProfile(@PathVariable int id) {
+        return profileService.deleteProfile(id);
     }
 
 }

@@ -27,7 +27,7 @@ public class StudentService {
             return ResponseEntity.ok(new CustomResponse(false, "Get Successfully", students));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomResponse(true, "Error retrieving data", null));
+                    .body(new CustomResponse(true, "Error getting data", null));
         }
     }
 
