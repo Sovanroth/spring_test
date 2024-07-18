@@ -30,8 +30,7 @@ public class ProfileController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProfileResponse> updateProfile(@PathVariable int id, @RequestBody Profile profile) {
-        ProfileResponse response = profileService.updateProfile(id, profile);
-        return new ResponseEntity<>(response, response.isError() ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.OK);
+        return profileService.updateProfile(id, profile);
     }
 
     @DeleteMapping("/{id}")

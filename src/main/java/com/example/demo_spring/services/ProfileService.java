@@ -48,11 +48,11 @@ public class ProfileService {
         }
     }
 
-    public ProfileResponse updateProfile(int id, Profile profile) {
+    public ResponseEntity<ProfileResponse> updateProfile(int id, Profile profile) {
         try {
-            Optional<Profile> profileOptional = profileRepository.findById(id);
-            if (profileOptional.isPresent()) {
-                Profile existingProfile = profileOptional.get();
+            Optional<Profile> existingProfileOptional = profileRepository.findById(id);
+            if (existingProfileOptional.isPresent()) {
+                Profile existingProfile = existingProfileOptional.get();
 
                 if (profile.getAddress() != null) {
                     existingProfile.setAddress(profile.getAddress());
@@ -63,12 +63,14 @@ public class ProfileService {
                 }
 
                 Profile updatedProfile = profileRepository.save(existingProfile);
-                return new ProfileResponse(false, "Profile updated successfully", List.of(updatedProfile));
+                return ResponseEntity.ok(new ProfileResponse(false, "Profile updated successfully", List.of(updatedProfile)));
             } else {
-                return new ProfileResponse(true, "Profile not found", null);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ProfileResponse(true, "Profile not found", null));
             }
         } catch (Exception e) {
-            return new ProfileResponse(true, "Error updating profile", null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ProfileResponse(true, "Error updating profile", null));
         }
     }
 
