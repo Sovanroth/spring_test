@@ -1,18 +1,11 @@
 package com.example.demo_spring.controllers;
 
 import com.example.demo_spring.models.Profile;
-import com.example.demo_spring.models.Student;
 import com.example.demo_spring.services.ProfileService;
-import com.example.demo_spring.services.StudentService;
-import com.example.demo_spring.utils.CustomResponse;
 import com.example.demo_spring.utils.ProfileResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("profiles")
@@ -20,8 +13,11 @@ import java.util.Optional;
 public class ProfileController {
 
     private final ProfileService profileService;
-    private final StudentService studentService;
 
+    @GetMapping
+    public ResponseEntity<ProfileResponse> getAllProfiles() {
+        return profileService.findAllProfile();
+    }
 
     @PostMapping("/{studentId}")
     public ResponseEntity<ProfileResponse> createProfile(@PathVariable int studentId, @RequestBody Profile profile) {

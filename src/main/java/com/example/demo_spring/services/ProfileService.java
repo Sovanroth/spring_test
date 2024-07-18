@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,8 +26,14 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final StudentService studentService;
 
-    public List<Profile> findAllProfile() {
-        return profileRepository.findAll();
+
+    public ResponseEntity<ProfileResponse> findAllProfile() {
+        try {
+            List<Profile> profiles = profileRepository.findAll();
+            return ResponseEntity.ok(new ProfileResponse(false, "Get Successfully", profiles));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ProfileResponse(true, "Error getting data", null));
+        }
     }
 
     public ResponseEntity<ProfileResponse> createProfile(int studentId, Profile profile) {
