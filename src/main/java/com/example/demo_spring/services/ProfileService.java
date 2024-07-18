@@ -32,7 +32,8 @@ public class ProfileService {
             List<Profile> profiles = profileRepository.findAll();
             return ResponseEntity.ok(new ProfileResponse(false, "Get Successfully", profiles));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ProfileResponse(true, "Error getting data", null));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ProfileResponse(true, "Error getting data", null));
         }
     }
 

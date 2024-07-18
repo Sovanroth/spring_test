@@ -23,7 +23,6 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
 
         try {
-            // Check if the email is already in use
             if (repository.findByEmail(request.getEmail()).isPresent()) {
                 return AuthenticationResponse.builder()
                         .error(true)
@@ -31,7 +30,6 @@ public class AuthenticationService {
                         .build();
             }
 
-            // If email is not in use, proceed with registration
             var user = User.builder()
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
@@ -58,7 +56,6 @@ public class AuthenticationService {
 
     public AuthenticationResponse login(AuthenticationRequest request) {
         try {
-            // Find the user by email
             var userOptional = repository.findByEmail(request.getEmail());
             if (userOptional.isEmpty()) {
                 return AuthenticationResponse.builder()
@@ -69,7 +66,6 @@ public class AuthenticationService {
 
             var user = userOptional.get();
 
-            // Validate the password
             if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
                 return AuthenticationResponse.builder()
                         .error(true)
@@ -77,10 +73,8 @@ public class AuthenticationService {
                         .build();
             }
 
-            // Generate JWT token
             var jwtToken = jwtService.generateToken(user);
 
-            // Return success response
             return AuthenticationResponse.builder()
                     .error(false)
                     .message("Login successful")
@@ -91,7 +85,6 @@ public class AuthenticationService {
                             .build())
                     .build();
         } catch (Exception e) {
-            // Handle unexpected errors
             return AuthenticationResponse.builder()
                     .error(true)
                     .message("An unexpected error occurred: " + e.getMessage())
