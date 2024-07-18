@@ -24,7 +24,7 @@ public class ProfileController {
 
 
     @PostMapping("/{studentId}")
-    public ResponseEntity<CustomResponse> createProfile(@PathVariable int studentId, @RequestBody Profile profile) {
+    public ResponseEntity<ProfileResponse> createProfile(@PathVariable int studentId, @RequestBody Profile profile) {
         return profileService.createProfile(studentId, profile);
     }
 

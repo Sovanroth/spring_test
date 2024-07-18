@@ -29,25 +29,22 @@ public class ProfileService {
         return profileRepository.findAll();
     }
 
-    public ResponseEntity<CustomResponse> createProfile(int studentId, Profile profile) {
+    public ResponseEntity<ProfileResponse> createProfile(int studentId, Profile profile) {
         try {
             Optional<Student> studentOptional = studentService.getStudentById(studentId);
             if (studentOptional.isPresent()) {
                 Student student = studentOptional.get();
                 profile.setStudent(student);
                 Profile createdProfile = profileRepository.save(profile);
-                Optional<Profile> fullProfile = profileRepository.findById(createdProfile.getId());
-                return fullProfile.map(fp -> ResponseEntity.status(HttpStatus.CREATED)
-                                .body(new CustomResponse(false, "Profile created successfully", List.of())))
-                        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                .body(new CustomResponse(true, "Profile not found after creation", null)));
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(new ProfileResponse(false, "Profile created successfully", List.of(createdProfile)));
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new CustomResponse(true, "Student not found", null));
+                        .body(new ProfileResponse(true, "Student not found", null));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomResponse(true, "Error creating profile", null));
+                    .body(new ProfileResponse(true, "Error creating profile", null));
         }
     }
 
