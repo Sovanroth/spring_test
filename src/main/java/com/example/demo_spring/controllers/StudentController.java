@@ -48,10 +48,6 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable int id) {
         Optional<Student> student = studentService.getStudentById(id);
-        if (student.isPresent()) {
-            return ResponseEntity.ok(student.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return student.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
