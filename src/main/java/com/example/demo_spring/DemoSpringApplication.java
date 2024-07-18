@@ -10,6 +10,4 @@ public class DemoSpringApplication {
 		SpringApplication.run(DemoSpringApplication.class, args);
 	}
 
-
-//	/home/reaksa/spring_test/target/demo_spring-0.0.1-SNAPSHOT.jar
 }
