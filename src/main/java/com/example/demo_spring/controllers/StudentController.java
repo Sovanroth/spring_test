@@ -1,5 +1,6 @@
 package com.example.demo_spring.controllers;
 
+import com.example.demo_spring.dtos.StudentDto;
 import com.example.demo_spring.models.Student;
 import com.example.demo_spring.services.StudentService;
 import com.example.demo_spring.utils.CustomResponse;
@@ -26,7 +27,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomResponse> createStudent(@RequestBody Student student) {
+    public ResponseEntity<CustomResponse> createStudent(@RequestBody StudentDto student) {
         return studentService.createStudent(student);
     }
 
@@ -36,7 +37,7 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomResponse> updateStudent(@PathVariable int id, @RequestBody Student student) {
+    public ResponseEntity<CustomResponse> updateStudent(@PathVariable int id, @RequestBody StudentDto student) {
         return studentService.updateStudent(id, student);
     }
 

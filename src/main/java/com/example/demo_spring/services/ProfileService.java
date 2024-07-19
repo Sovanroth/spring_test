@@ -1,5 +1,6 @@
 package com.example.demo_spring.services;
 
+import com.example.demo_spring.dtos.ProfileDto;
 import com.example.demo_spring.models.Profile;
 import com.example.demo_spring.models.Student;
 import com.example.demo_spring.repository.ProfileRepository;
@@ -37,13 +38,19 @@ public class ProfileService {
         }
     }
 
-    public ResponseEntity<ProfileResponse> createProfile(int studentId, Profile profile) {
+    public ResponseEntity<ProfileResponse> createProfile(int studentId, ProfileDto profile) {
         try {
             Optional<Student> studentOptional = studentService.getStudentById(studentId);
             if (studentOptional.isPresent()) {
                 Student student = studentOptional.get();
-                profile.setStudent(student);
-                Profile createdProfile = profileRepository.save(profile);
+
+                Profile profileData = new Profile();
+                profileData.setAddress(profile.getAddress());
+                profileData.setPhoneNumber(profile.getPhoneNumber());
+                profileData.setStudent(student);
+
+                Profile createdProfile = profileRepository.save(profileData);
+
                 return ResponseEntity.status(HttpStatus.CREATED)
                         .body(new ProfileResponse(false, "Profile created successfully", List.of(createdProfile)));
             } else {
@@ -56,7 +63,7 @@ public class ProfileService {
         }
     }
 
-    public ResponseEntity<ProfileResponse> updateProfile(int id, Profile profile) {
+    public ResponseEntity<ProfileResponse> updateProfile(int id, ProfileDto profile) {
         try {
             Optional<Profile> existingProfileOptional = profileRepository.findById(id);
             if (existingProfileOptional.isPresent()) {

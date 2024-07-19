@@ -3,9 +3,9 @@ package com.example.demo_spring.services;
 import com.example.demo_spring.config.JwtService;
 import com.example.demo_spring.models.User;
 import com.example.demo_spring.repository.UserRepository;
-import com.example.demo_spring.utils.AuthenticationRequest;
+import com.example.demo_spring.dtos.AuthenticationDto;
 import com.example.demo_spring.utils.AuthenticationResponse;
-import com.example.demo_spring.utils.RegisterRequest;
+import com.example.demo_spring.dtos.RegisterDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +20,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(RegisterDto request) {
 
         try {
             if (repository.findByEmail(request.getEmail()).isPresent()) {
@@ -54,7 +54,7 @@ public class AuthenticationService {
     }
 
 
-    public AuthenticationResponse login(AuthenticationRequest request) {
+    public AuthenticationResponse login(AuthenticationDto request) {
         try {
             var userOptional = repository.findByEmail(request.getEmail());
             if (userOptional.isEmpty()) {

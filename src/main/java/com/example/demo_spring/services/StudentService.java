@@ -1,5 +1,6 @@
 package com.example.demo_spring.services;
 
+import com.example.demo_spring.dtos.StudentDto;
 import com.example.demo_spring.models.Student;
 import com.example.demo_spring.repository.StudentRepository;
 import com.example.demo_spring.utils.CustomResponse;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,13 +33,16 @@ public class StudentService {
         }
     }
 
-    public ResponseEntity<CustomResponse> createStudent(Student student) {
+    public ResponseEntity<CustomResponse> createStudent(@RequestBody StudentDto student) {
         try {
             if (student.getName().isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new CustomResponse(true, "Please input student name", null));
             } else {
-                Student savedStudent = studentRepository.save(student);
+                Student studentData = new Student();
+                studentData.setName(student.getName());
+                studentData.setAge(student.getAge());
+                Student savedStudent = studentRepository.save(studentData);
                 return ResponseEntity.status(HttpStatus.CREATED)
                         .body(new CustomResponse(false, "Student created successfully", List.of(savedStudent)));
             }
@@ -63,7 +68,7 @@ public class StudentService {
         }
     }
 
-    public ResponseEntity<CustomResponse> updateStudent(int id, Student student) {
+    public ResponseEntity<CustomResponse> updateStudent(int id, StudentDto student) {
         try {
             Optional<Student> studentOptional = studentRepository.findById(id);
             if (studentOptional.isPresent()) {

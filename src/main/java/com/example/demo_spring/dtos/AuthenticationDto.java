@@ -1,4 +1,4 @@
-package com.example.demo_spring.utils;
+package com.example.demo_spring.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class AuthenticationDto {
 
     private String email;
     private String password;

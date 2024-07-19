@@ -1,5 +1,6 @@
 package com.example.demo_spring.controllers;
 
+import com.example.demo_spring.dtos.ProfileDto;
 import com.example.demo_spring.models.Profile;
 import com.example.demo_spring.services.ProfileService;
 import com.example.demo_spring.utils.ProfileResponse;
@@ -20,12 +21,12 @@ public class ProfileController {
     }
 
     @PostMapping("/{studentId}")
-    public ResponseEntity<ProfileResponse> createProfile(@PathVariable int studentId, @RequestBody Profile profile) {
+    public ResponseEntity<ProfileResponse> createProfile(@PathVariable int studentId, @RequestBody ProfileDto profile) {
         return profileService.createProfile(studentId, profile);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProfileResponse> updateProfile(@PathVariable int id, @RequestBody Profile profile) {
+    public ResponseEntity<ProfileResponse> updateProfile(@PathVariable int id, @RequestBody ProfileDto profile) {
         return profileService.updateProfile(id, profile);
     }
 
