@@ -33,9 +33,14 @@ public class StudentService {
 
     public ResponseEntity<CustomResponse> createStudent(Student student) {
         try {
-            Student savedStudent = studentRepository.save(student);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new CustomResponse(false, "Student created successfully", List.of(savedStudent)));
+            if (student.getName().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new CustomResponse(true, "Please input student name", null));
+            } else {
+                Student savedStudent = studentRepository.save(student);
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(new CustomResponse(false, "Student created successfully", List.of(savedStudent)));
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new CustomResponse(true, "Error creating student", null));
