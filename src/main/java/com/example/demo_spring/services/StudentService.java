@@ -3,7 +3,9 @@ package com.example.demo_spring.services;
 import com.example.demo_spring.dtos.StudentDto;
 import com.example.demo_spring.models.Student;
 import com.example.demo_spring.repository.StudentRepository;
+import com.example.demo_spring.serviceInterface.StudentInterface;
 import com.example.demo_spring.utils.CustomResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +16,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StudentService {
+@RequiredArgsConstructor
+public class StudentService implements StudentInterface {
 
     private final StudentRepository studentRepository;
 
-    @Autowired
-    public StudentService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
-
+    @Override
     public ResponseEntity<CustomResponse> getAllStudents() {
         try {
             List<Student> students = studentRepository.findAll();
@@ -33,6 +32,7 @@ public class StudentService {
         }
     }
 
+    @Override
     public ResponseEntity<CustomResponse> createStudent(@RequestBody StudentDto student) {
         try {
             if (student.getName().isEmpty()) {
@@ -52,6 +52,7 @@ public class StudentService {
         }
     }
 
+    @Override
     public ResponseEntity<CustomResponse> deleteStudent(int id) {
         try {
             Optional<Student> studentOptional = studentRepository.findById(id);
@@ -68,6 +69,7 @@ public class StudentService {
         }
     }
 
+    @Override
     public ResponseEntity<CustomResponse> updateStudent(int id, StudentDto student) {
         try {
             Optional<Student> studentOptional = studentRepository.findById(id);
@@ -93,6 +95,7 @@ public class StudentService {
         }
     }
 
+    @Override
     public ResponseEntity<CustomResponse> searchStudentsByName(String name) {
         try {
             List<Student> students = studentRepository.findByNameContainingIgnoreCase(name);
@@ -103,6 +106,7 @@ public class StudentService {
         }
     }
 
+    @Override
     public Optional<Student> getStudentById(int id) {
         return studentRepository.findById(id);
     }

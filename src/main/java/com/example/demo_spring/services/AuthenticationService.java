@@ -4,22 +4,23 @@ import com.example.demo_spring.config.JwtService;
 import com.example.demo_spring.models.User;
 import com.example.demo_spring.repository.UserRepository;
 import com.example.demo_spring.dtos.AuthenticationDto;
+import com.example.demo_spring.serviceInterface.AuthenticationInterface;
 import com.example.demo_spring.utils.AuthenticationResponse;
 import com.example.demo_spring.dtos.RegisterDto;
+import com.example.demo_spring.utils.UserResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationService implements AuthenticationInterface {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
+    @Override
     public AuthenticationResponse register(RegisterDto request) {
 
         try {
@@ -39,7 +40,7 @@ public class AuthenticationService {
             return AuthenticationResponse.builder()
                     .error(false)
                     .message("User registered successfully")
-                    .user(AuthenticationResponse.UserResponse.builder()
+                    .user(UserResponse.builder()
                             .email(user.getEmail())
                             .password(user.getPassword())
                             .token(jwtToken)
@@ -54,6 +55,7 @@ public class AuthenticationService {
     }
 
 
+    @Override
     public AuthenticationResponse login(AuthenticationDto request) {
         try {
             var userOptional = repository.findByEmail(request.getEmail());
@@ -78,7 +80,7 @@ public class AuthenticationService {
             return AuthenticationResponse.builder()
                     .error(false)
                     .message("Login successful")
-                    .user(AuthenticationResponse.UserResponse.builder()
+                    .user(UserResponse.builder()
                             .email(user.getEmail())
                             .password(user.getPassword())
                             .token(jwtToken)

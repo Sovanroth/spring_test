@@ -1,11 +1,15 @@
 package com.example.demo_spring.utils;
 
 import com.example.demo_spring.models.Student;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class CustomResponse {
-    private boolean error;
+    private Boolean error;
     private String message;
     private List<Student> students;
 
@@ -15,27 +19,4 @@ public class CustomResponse {
         this.students = students;
     }
 
-    public boolean isError() {
-        return error;
-    }
-
-    public void setError(boolean error) {
-        this.error = error;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
 }

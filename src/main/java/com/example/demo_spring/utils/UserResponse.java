@@ -10,10 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
-
-    private Boolean error;
-    private String message;
-    private UserResponse user;
-    
+public class UserResponse {
+    private String email;
+    private String password;
+    private String token;
 }

@@ -5,6 +5,7 @@ import com.example.demo_spring.models.Profile;
 import com.example.demo_spring.models.Student;
 import com.example.demo_spring.repository.ProfileRepository;
 import com.example.demo_spring.repository.StudentRepository;
+import com.example.demo_spring.serviceInterface.ProfileInterface;
 import com.example.demo_spring.utils.CustomResponse;
 import com.example.demo_spring.utils.ProfileResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,12 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ProfileService {
+public class ProfileService implements ProfileInterface {
 
     private final ProfileRepository profileRepository;
     private final StudentService studentService;
 
-
+    @Override
     public ResponseEntity<ProfileResponse> findAllProfile() {
         try {
             List<Profile> profiles = profileRepository.findAll();
@@ -38,6 +39,7 @@ public class ProfileService {
         }
     }
 
+    @Override
     public ResponseEntity<ProfileResponse> createProfile(int studentId, ProfileDto profile) {
         try {
             Optional<Student> studentOptional = studentService.getStudentById(studentId);
@@ -63,6 +65,7 @@ public class ProfileService {
         }
     }
 
+    @Override
     public ResponseEntity<ProfileResponse> updateProfile(int id, ProfileDto profile) {
         try {
             Optional<Profile> existingProfileOptional = profileRepository.findById(id);
@@ -89,6 +92,7 @@ public class ProfileService {
         }
     }
 
+    @Override
     public ResponseEntity<ProfileResponse> deleteProfile(int id) {
         try {
             Optional<Profile> profileOptional = profileRepository.findById(id);
