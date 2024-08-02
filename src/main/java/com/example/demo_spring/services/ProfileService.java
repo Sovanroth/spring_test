@@ -4,20 +4,13 @@ import com.example.demo_spring.dtos.ProfileDto;
 import com.example.demo_spring.models.Profile;
 import com.example.demo_spring.models.Student;
 import com.example.demo_spring.repository.ProfileRepository;
-import com.example.demo_spring.repository.StudentRepository;
 import com.example.demo_spring.serviceInterface.ProfileInterface;
-import com.example.demo_spring.utils.CustomResponse;
 import com.example.demo_spring.utils.ProfileResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.PropertyResolver;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
